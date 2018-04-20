@@ -1,0 +1,14 @@
+def load_companies(stock_exchange):
+    Trim spaces at end - DONE
+    Trim ^ to end - DONE
+    No Finance - DONE
+    No Real Estate Investment Trusts (industry) - DONE
+
+def load_fundamentals(symbol):
+    Handle companies with less than 5 quarters? Examples: CHSCO, CHSCP  - DONE
+
+def download_all():
+    create report after the end of the process:
+        start, end, duration
+        how many stocks per exchange
+        save all as csv before inserting into db
