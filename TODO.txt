@@ -1,3 +1,13 @@
+data from advfn are not complete (for example no Short-term debt, aka debt current)
+use data from Morningstat or stockrow.
+get filing-date from SEC edgar:
+  https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000051143&type=10-%25&dateb=&owner=exclude&start=0&count=10&output=atom
+  https://www.sec.gov/Archives/edgar/data/51143/000110465917064968/0001104659-17-064968-index.htm
+    Period of Report: dei: DocumentPeriodEndDate
+
+
+
+
 def load_companies(stock_exchange):
     Trim spaces at end - DONE
     Trim ^ to end - DONE

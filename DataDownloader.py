@@ -4,6 +4,7 @@ import requests
 import os
 import html
 from LogUtil import create_logger
+from MorningstarDAO import MorningstarDAO
 
 console_log = create_logger()
 log = create_logger('AdvfnFundamentals')
@@ -25,7 +26,7 @@ def load_fundamentals(symbol):
     """
     url = "https://ih.advfn.com/p.php?pid=financials&btn=quarterly_reports&symbol=%s" % symbol
     try:
-        df = pd.read_html(requests.get(url, headers={'User-agent': 'Mozilla/5.0'}).text,
+        df = pd.read_html(requests.get(url, headers={'User-agent': 'Mozilla/5.0'} , timeout=10).text,
                       attrs={'style': 'width:705px; text-align:left; background-color: #ffffff;'},
                       index_col=0)[0]
     except ValueError as e:
@@ -172,6 +173,8 @@ def prices(symbol, dates=None, start=None, end=None):
 
 def download_all():
     stock_exchanges = ('NASDAQ', 'NYSE', 'AMEX')
+
+    dao = MorningstarDAO()
     for exchange in stock_exchanges:
         target_dir = 'data/%s' % exchange
         if not os.path.exists(target_dir):
@@ -180,24 +183,25 @@ def download_all():
         for symbol in companies.index:
             console_log.info(symbol)
             try:
-                df = load_fundamentals("%s%%3A%s" % (exchange, symbol))
+                df = dao.load_fundamentals(symbol, exchange)
                 df.to_csv("%s/%s.csv" % (target_dir, symbol))
-            except ValueError as e:
+            except Exception as e:
                 log.warn("No data for '%s' %s\n\t%s" % (symbol, ', '.join(companies.loc[symbol]), e))
 
 
 
+
 if __name__ == "__main__":
-    #download_all()
-    exchange = 'NYSE'
-    symbol = 'IBM'
+    download_all()
+    #exchange = 'NYSE'
+    #symbol = 'IBM'
     #df = load_fundamentals(symbol)
     #target_dir = 'data/%s' % exchange
     #df.to_csv("%s/%s.csv" % (target_dir, symbol))
     #print(history('IBM'))
     #print(prices(symbol, start='2017-03-11', end='2018-03-03'))
     #print(prices(symbol, ['2017-03-11', '2017-04-29', '2017-07-29', '2017-11-04', '2018-03-03']))
-    print(history(symbol, '1m'))
+    #print(history(symbol, '1m'))
 
 
 

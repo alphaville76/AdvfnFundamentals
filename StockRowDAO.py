@@ -10,7 +10,7 @@ STOCKROW_DICT = {"mkt_cap": "3cf40801-c6e1-4655-9f3a-b18a24a7347a",
 
 def load_stockrow_indicator(symbol, indicator):
     url = "https://stockrow.com/api/fundamentals.json?indicators[]=%s&tickers[]=%s"
-    response = requests.post(url % (STOCKROW_DICT[indicator], symbol)).text
+    response = requests.post(url % (STOCKROW_DICT[indicator], symbol), timeout=10).text
     response_json = json.loads(response)
 
     df = pd.DataFrame(response_json['series'][0]['data'])
